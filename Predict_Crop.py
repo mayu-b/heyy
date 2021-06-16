@@ -10,17 +10,12 @@ model = pickle.load(open('model.pkl', 'rb'))
 df = pd.read_csv("crop_prediction_model_one.csv")
 
 converts_dict = {
-    'Nitrogen': 'N',
-    'Phosphorus': 'P',
-    'Potassium': 'K',
     'Temperature': 'temperature',
     'Humidity': 'humidity',
-    'Rainfall': 'rainfall',
-    'ph': 'ph'
 }
 
-def predict_crop(n, p, k, temperature, humidity, ph, rainfall):
-    input = np.array([[n, p, k, temperature, humidity, ph, rainfall]]).astype(np.float64)
+def predict_crop(temperature, humidity):
+    input = np.array([[temperature, humidity]]).astype(np.float64)
     prediction = model.predict(input)
     return prediction[0]
 
@@ -88,16 +83,16 @@ def main():
         if plot_type == 'Bar Plot':
             x = 'label'
             y = st.selectbox("Select a feature to compare between crops",
-                ('Phosphorus', 'Nitrogen', 'ph', 'Potassium', 'Temperature', 'Humidity', 'Rainfall'))
+                ('Temperature', 'Humidity'))
         if plot_type == 'Scatter Plot':
             x = st.selectbox("Select a property for 'X' axis",
-                ('Phosphorus', 'Nitrogen', 'ph', 'Potassium', 'Temperature', 'Humidity', 'Rainfall'))
+                ('Temperature', 'Humidity'))
             y = st.selectbox("Select a property for 'Y' axis",
-                ('Nitrogen', 'Phosphorus', 'ph', 'Potassium', 'Temperature', 'Humidity', 'Rainfall'))
+                ('Temperature', 'Humidity'))
         if plot_type == 'Box Plot':
             x = "label"
             y = st.selectbox("Select a feature",
-                ('Phosphorus', 'Nitrogen', 'ph', 'Potassium', 'Temperature', 'Humidity', 'Rainfall'))
+                ('Temperature', 'Humidity'))
 
         if st.button("Visulaize"):
             if plot_type == 'Bar Plot':
@@ -115,16 +110,11 @@ def main():
         st.markdown(html_temp_pred, unsafe_allow_html=True)
         st.header("To predict your crop give values")
         st.subheader("Drag to Give Values")
-        n = st.slider('Nitrogen', 0, 140)
-        p = st.slider('Phosphorus', 5, 145)
-        k = st.slider('Potassium', 5, 205)
         temperature = st.slider('Temperature', 8.83, 43.68)
         humidity = st.slider('Humidity', 14.26, 99.98)
-        ph = st.slider('pH', 3.50, 9.94)
-        rainfall = st.slider('Rainfall', 20.21, 298.56)
         
         if st.button("Predict your crop"):
-            output=predict_crop(n, p, k, temperature, humidity, ph, rainfall)
+            output=predict_crop(temperature, humidity)
             res = "“"+ output.capitalize() + "”"
             st.success('The most suitable crop for your field is {}'.format(res))
 
