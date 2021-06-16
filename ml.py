@@ -22,8 +22,8 @@ y = np.array(y)
 grid = {"n_estimators": [i for i in range(200, 1200, 10)],
         "max_depth": [i for i in range(1, 30)],
         "max_features": ["auto", "sqrt"],
-        "min_samples_split": [i for i in range(1, 6)],
-        "min_samples_leaf": [i for i in range(1, 6)]}
+        "min_samples_split": [i for i in range(1, 2)],
+        "min_samples_leaf": [i for i in range(1, 2)]}
 
 clf = RandomForestClassifier(n_jobs=1)
 
